@@ -8,9 +8,7 @@ import java.io.*;
 import static consts.Const.basePath;
 
 public class PropertiesTest2 {
-
     public static void main(String[] args) throws IOException {
-
         File file = new File(basePath + "\\competition\\output");
         int length = file.list().length;
         //初始化
@@ -20,31 +18,16 @@ public class PropertiesTest2 {
         Element g = G1.newRandomElement();
         //私钥x
         Element x = Zr.newRandomElement();
-
-
-
         System.out.println(x);
-
-
-
         byte[] bytes = x.toCanonicalRepresentation();
-
-
         File file1 = new File(basePath + "\\competition\\key");
-//        FileOutputStream fileOutputStream = new FileOutputStream(file1);
-//        fileOutputStream.write(bytes);
-
-
-
-
-//        FileInputStream fileInputStream = new FileInputStream(file1);
-//        byte[] bytes2 = new byte[160];
-//        fileInputStream.read(bytes2);
-//
-//        Element x2 = Zr.newElementFromBytes(bytes2);
-//
-//        System.out.println("****************************");
-//        System.out.println(x2);
-
+        FileOutputStream fileOutputStream = new FileOutputStream(file1);
+        fileOutputStream.write(bytes);
+        FileInputStream fileInputStream = new FileInputStream(file1);
+        byte[] bytes2 = new byte[160];
+        fileInputStream.read(bytes2);
+        Element x2 = Zr.newElementFromBytes(bytes2);
+        System.out.println("****************************");
+        System.out.println(x2);
     }
 }

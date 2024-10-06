@@ -82,8 +82,10 @@ public class Tag implements Serializable {
         this.tags = list1;
         this.hashs = list2;
         this.rand = list4;
-        bufferedInputStream.close();
-        fileInputStream.close();
+        if(bufferedInputStream != null)
+            bufferedInputStream.close();
+        if(fileInputStream != null)
+            fileInputStream.close();
     }
 
     public void tagFromFile(Field G1) throws IOException, ClassNotFoundException {

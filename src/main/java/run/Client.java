@@ -14,9 +14,15 @@ import static consts.Const.basePath;
 
 public class Client {
 
+    private static String AUDIT = "audit";
+    private static String FILE_UP = "fileup";
+    private static String option = AUDIT;
+
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
         File file = new File(basePath + "\\competition\\output1");
-        int length = file.list().length;
+        int length = 0;
+        if (file.list() != null)
+            length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
         Field G1 = pairing.getG1();
@@ -36,14 +42,20 @@ public class Client {
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
         //file upload
-        if(args.length > 0 && args[0].equals("fileup"))
+
+//        if(args.length > 0 && args[0].equals("fileup"))
+//            Client.FileInit();
+//        else if(args.length > 0 && args[0].equals("audit")){
+//            //文件验证
+//            Client.audit();
+//        }
+        if (option.equals("fileup"))
             Client.FileInit();
-        else if(args.length > 0 && args[0].equals("audit")){
-            //文件验证
+        else if (option.equals("audit"))
             Client.audit();
-            }else{
-            System.out.println("请输入指令");
-        }
+//        else{
+//            System.out.println("请输入指令");
+//        }
     }
 
     public static void FileInit() throws IOException, NoSuchAlgorithmException {
@@ -112,65 +124,41 @@ public class Client {
     }
 
     public static void audit() throws IOException, ClassNotFoundException {
-
-
         File file = new File(basePath + "\\competition\\output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
         Field G1 = pairing.getG1();
         Field Zr = pairing.getZr();
-
-        //g
-
-
         byte[] gb = new byte[128];
         FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
-
-
         //私钥x
         byte[] xb = new byte[20];
         FileInputStream fileInputStream1 = new FileInputStream(basePath + "\\competition\\properties\\properties-x");
         fileInputStream1.read(xb);
         Element x = Zr.newElementFromBytes(xb);
-
-
-
         //公钥g^x
         byte[] g_x_b = new byte[128];
         FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
         //验证
-
         int num = 200;
-
         ArrayList<Element> chal = Client.challenge(Zr,num);
-
-
         Server server = new Server();
         Tag tag1 = server.tagFromFile(G1);
-
         Element hash = server.hash(G1, tag1, chal,num);
-
         Element xigema = server.sigmaGen(tag1, chal, G1);
-
         Element mu = server.muGen(tag1, G1, Zr, chal);
-
-
         long startTimeverify = System.currentTimeMillis();
-
-
         Element t1 = pairing.pairing(xigema,g);
         Element t2 = pairing.pairing(hash.duplicate().mul(g.duplicate().powZn(mu)),g_x);
         boolean equals = t1.equals(t2);
         System.out.println("数据验证结果为：" + equals);
         long endtTimeverify = System.currentTimeMillis();
-
         long verifytime = endtTimeverify - startTimeverify;
-
         System.out.println("用户验证时间：" + (double)verifytime/1000 + "s" );
     }
 }
