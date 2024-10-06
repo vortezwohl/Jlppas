@@ -1,4 +1,4 @@
-package org.lppa.Run;
+package run;
 
 import bean.Properties;
 import bean.Tag;
@@ -13,8 +13,10 @@ import java.io.*;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import static consts.Const.basePath;
 
-public class datacheck {
+
+public class DataCheck {
 
     @Test
     public void propertiesGen() throws Exception {
@@ -34,7 +36,7 @@ public class datacheck {
 
         Properties properties = new Properties(pairing, G1, Zr, g, x, u, g_x);
 
-        FileOutputStream fileOutputStream = new FileOutputStream("D:\\competition\\inputoutputtest\\Properties\\Properties.dat");
+        FileOutputStream fileOutputStream = new FileOutputStream(basePath + "\\competition\\inputoutputtest\\Properties\\Properties.dat");
 
         ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
         outputStream.writeObject(properties);
@@ -48,10 +50,10 @@ public class datacheck {
         Tag tag = new Tag();
         ArrayList<Element> arrayList = new ArrayList<>();
         //读入文件块
-        File file = new File("D:\\competition\\output");
+        File file = new File(basePath + "\\competition\\output");
         String[] list = file.list();
 
-        FileInputStream fileInputStream = new FileInputStream("D:\\competition\\inputoutputtest\\Properties\\Properties.dat");
+        FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\inputoutputtest\\Properties\\Properties.dat");
         ObjectInputStream inputStream = new ObjectInputStream(fileInputStream);
         Properties pro = (Properties)inputStream.readObject();
 

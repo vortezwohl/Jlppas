@@ -1,4 +1,4 @@
-package org.lppa.Run;
+package run;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class TagGen {
+import static consts.Const.basePath;
+
+public class TagGen2 {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 
@@ -21,7 +23,7 @@ public class TagGen {
         time1 = System.nanoTime();
 
         //读入文件块
-        File file = new File("D:\\competition\\output");
+        File file = new File(basePath + "\\competition\\output");
         String[] list = file.list();
 
 
@@ -55,32 +57,38 @@ public class TagGen {
         Element hmivi = G1.newOneElement();
 
 
+
+
         //读入文件，生成xigema
         for (int i = 0; i < list.length; i++) {
+
             String s = list[i];
 
-            FileInputStream fs = new FileInputStream( "D:\\competition\\output\\"+ s);
-            byte[] b = new byte[(int) s.length()];
+            FileInputStream fs = new FileInputStream(basePath + "\\competition\\output\\"+ s);
+            byte[] b = new byte[20];
             fs.read(b);
 
             //文件mi
 
             Element mi = Zr.newElementFromBytes(b);
-            //文件h(mi)哈希值
+//            BigInteger mi = new BigInteger(b);
+//            文件h(mi)哈希值
 
             MessageDigest md = MessageDigest.getInstance("sha");
+
             md.update(b);
 
             byte[] digest= md.digest();
 
-            Element hmi = G1.newElementFromHash(digest,0,digest.length);
+//            Element hmi = G1.newElementFromHash(digest,0,digest.length);
 
             //生成西格玛i
 
             Element umi = u.duplicate().powZn(mi);
 
-            Element hmiumi = umi.duplicate().mul(hmi);
+//            Element hmiumi = umi.duplicate().mul(hmi);
 
+            Element hmiumi = umi;
             Element xigemai = hmiumi.duplicate().powZn(x);
 
 
@@ -89,16 +97,19 @@ public class TagGen {
             xigema = xigema.duplicate().mul(xigemaivi);
 
             //生成μ
-            miu = miu.duplicate().add(vi.duplicate().mulZn(mi));
+            miu = miu.duplicate().add(vi.duplicate().mul(mi));
 
 
             //生成1-s hmivi
-            Element hmivii = hmi.duplicate().powZn(vi);
+//            Element hmivii = hmi.duplicate().powZn(vi);
 
-            hmivi = hmivi.duplicate().mul(hmivii);
+//            hmivi = hmivi.duplicate().mul(hmivii);
 
         }
 
+
+        Element hash = G1.newRandomElement();
+        Element ha = hash.duplicate().powZn(vi);
 
         //验证
         Element t1 = pairing.pairing(xigema,g);
@@ -108,7 +119,9 @@ public class TagGen {
 
 
         Element umiu = u.duplicate().powZn(miu);
-        Element t2 = pairing.pairing(hmivi.duplicate().mul(umiu),g_x);
+//        Element t2 = pairing.pairing(hmivi.duplicate().mul(umiu),g_x);
+
+        Element t2 = pairing.pairing(umiu,g_x);
 
         System.out.println(t2);
 

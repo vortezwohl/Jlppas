@@ -1,5 +1,4 @@
-package org.lppa.Run;
-import org.testng.annotations.Test;
+package run;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,31 +6,30 @@ import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.testng.annotations.Test;
+
+import static consts.Const.basePath;
 
 /**
  * @author Administrator
  * @version 1.0
  **/
-public class FileBlocks {
 
+public class FileBlocks {
 
     //测试文件分块
     @Test
     public void testChunk() throws IOException {
         //源文件
-        File sourceFile = new File("D:\\competition\\input\\testfile.rar");
+        File sourceFile = new File(basePath + "\\competition\\input\\test_file.rar");
         //块文件目录
-        String chunkFileFolder = "D:\\competition\\output1\\";
-
+        String chunkFileFolder = basePath + "\\competition\\output1\\";
         //先定义块文件大小
         long chunkFileSize = 1024*1024;
-
         //块数
         long chunkFileNum = (long) Math.ceil(sourceFile.length() * 1.0 / chunkFileSize);
-
         //创建读文件的对象
         RandomAccessFile raf_read = new RandomAccessFile(sourceFile, "r");
-
         //缓冲区
         byte[] b = new byte[1024];
         for (int i = 0; i < chunkFileNum; i++) {
@@ -40,7 +38,6 @@ public class FileBlocks {
             //创建向块文件的写对象
             RandomAccessFile raf_write = new RandomAccessFile(chunkFile, "rw");
             int len = -1;
-
             while ((len = raf_read.read(b)) != -1) {
 
                 raf_write.write(b, 0, len);
@@ -50,8 +47,6 @@ public class FileBlocks {
                 }
             }
             raf_write.close();
-
-
         }
         raf_read.close();
     }
@@ -61,7 +56,7 @@ public class FileBlocks {
     @Test
     public void testMergeFile() throws IOException {
         //块文件目录
-        String chunkFileFolderPath = "D:\\competition\\output\\";
+        String chunkFileFolderPath = basePath + "\\competition\\output\\";
         //块文件目录对象
         File chunkFileFolder = new File(chunkFileFolderPath);
         //块文件列表
@@ -79,7 +74,7 @@ public class FileBlocks {
         });
 
         //合并文件
-        File mergeFile = new File("D:\\competition\\merge.pdf");
+        File mergeFile = new File(basePath + "\\competition\\merge.pdf");
         //创建新文件
         boolean newFile = mergeFile.createNewFile();
 
@@ -101,16 +96,12 @@ public class FileBlocks {
 
 
     @Test
-    public void aaa(){
+    public void test(){
         String s = "message";
         byte[] bytes = s.getBytes();
-
         for (int i = 0; i < bytes.length; i++) {
             System.out.print(bytes[i]);
         }
-
     }
-
-
 }
 

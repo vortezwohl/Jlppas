@@ -5,11 +5,13 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 import java.io.*;
 
-public class propertiesTest2 {
+import static consts.Const.basePath;
+
+public class PropertiesTest2 {
 
     public static void main(String[] args) throws IOException {
 
-        File file = new File("D:\\competition\\output");
+        File file = new File(basePath + "\\competition\\output");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
@@ -28,7 +30,7 @@ public class propertiesTest2 {
         byte[] bytes = x.toCanonicalRepresentation();
 
 
-        File file1 = new File("D:\\competition\\key");
+        File file1 = new File(basePath + "\\competition\\key");
 //        FileOutputStream fileOutputStream = new FileOutputStream(file1);
 //        fileOutputStream.write(bytes);
 

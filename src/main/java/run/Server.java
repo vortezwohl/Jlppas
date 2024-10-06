@@ -1,8 +1,8 @@
-package org.lppa.Run;
+package run;
 
 import bean.Tag;
-import bean.miu;
-import bean.xigema;
+import bean.Mu;
+import bean.Sigma;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
 import it.unisa.dia.gas.jpbc.Pairing;
@@ -11,16 +11,15 @@ import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 
-public class server {
+import static consts.Const.basePath;
+
+public class Server {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
 
 
-        File file = new File("D:\\competition\\output1");
+        File file = new File(basePath + "\\competition\\output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
@@ -29,33 +28,33 @@ public class server {
 
 
         byte[] gb = new byte[128];
-        FileInputStream fileInputStream = new FileInputStream("D:\\competition\\properties\\properties-g");
+        FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
 
 
         //公钥g^x
         byte[] g_x_b = new byte[128];
-        FileInputStream fileInputStream2 = new FileInputStream("D:\\competition\\properties\\properties-g_x");
+        FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
 
         Tag tag1 = new Tag();
-        tag1.tagfromfile(G1);
+        tag1.tagFromFile(G1);
 
     }
 
 
 
-    public Element miugen(Tag tag1,Field G1,Field Zr, ArrayList<Element>chal) throws IOException, ClassNotFoundException {
+    public Element muGen(Tag tag1, Field G1, Field Zr, ArrayList<Element>chal) throws IOException, ClassNotFoundException {
         long startTimemiu = System.currentTimeMillis();
 
         ArrayList<Integer> rand = tag1.rand;
 
-        File file1 = new File("D:\\competition\\output1");
-        miu miu = new miu();
-        miu.miugen(file1,Zr,chal,rand);
-        Element mu = miu.mu;
+        File file1 = new File(basePath + "\\competition\\output1");
+        Mu Mu = new Mu();
+        Mu.generate(file1,Zr,chal,rand);
+        Element mu = Mu.mu;
 
         long endtTimemiu = System.currentTimeMillis();
 
@@ -66,17 +65,16 @@ public class server {
         return mu;
     }
 
-    public Element xigemagen(Tag tag1,ArrayList<Element>chal,Field G1){
+    public Element sigmaGen(Tag tag1, ArrayList<Element>chal, Field G1){
         long startTimexigema = System.currentTimeMillis();
 
-        xigema xigema = new xigema();
-        xigema.xigen(tag1.tags,chal,G1);
+        Sigma sigma = new Sigma(tag1.tags,chal,G1);
         long endtTimexigema = System.currentTimeMillis();
 
         long xigematime = endtTimexigema - startTimexigema;
 
         System.out.println("σ生成时间：" + (double)xigematime/1000 + "s" );
-        return xigema.xi;
+        return sigma.xi;
     }
 
     public Element hash(Field G1,Tag tag1,ArrayList<Element>chal,int num){
@@ -89,9 +87,9 @@ public class server {
         return oneElement;
     }
 
-    public Tag tagformfile(Field G1) throws IOException, ClassNotFoundException {
+    public Tag tagFromFile(Field G1) throws IOException, ClassNotFoundException {
         Tag tag1 = new Tag();
-        tag1.tagfromfile(G1);
+        tag1.tagFromFile(G1);
         return tag1;
     }
 }

@@ -8,13 +8,15 @@ import org.junit.Test;
 import java.io.*;
 import java.util.ArrayList;
 
+import static consts.Const.basePath;
+
 public class InputOutputStreamTset {
 
 
 
     @Test
     public  void outtest() throws Exception {
-        File file = new File("D:\\competition\\inputoutputtest\\object.dat");
+        File file = new File(basePath + "\\competition\\inputoutputtest\\object.dat");
 
         FileOutputStream fileOutputStream = new FileOutputStream(file);
         ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream);
@@ -53,7 +55,7 @@ public class InputOutputStreamTset {
         //生成U
         Element u =  G1.newRandomElement();
 
-        File file = new File("D:\\competition\\inputoutputtest\\object.dat");
+        File file = new File(basePath + "\\competition\\inputoutputtest\\object.dat");
 
         FileOutputStream stream = new FileOutputStream(file);
         ObjectOutputStream outputStream = new ObjectOutputStream(stream);

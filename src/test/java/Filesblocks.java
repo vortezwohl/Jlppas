@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import static consts.Const.basePath;
 
 /**
  * @author Administrator
@@ -18,9 +19,9 @@ public class Filesblocks {
     @Test
     public void testChunk() throws IOException {
         //源文件
-        File sourceFile = new File("D:\\competition\\input\\3.mp4");
+        File sourceFile = new File(basePath + "/competition/input/3.mp4");
         //块文件目录
-        String chunkFileFolder = "D:\\competition\\output\\";
+        String chunkFileFolder = basePath + "/competition/output/";
 
         //先定义块文件大小
         long chunkFileSize = 1024*1024;
@@ -60,7 +61,7 @@ public class Filesblocks {
     @Test
     public void testMergeFile() throws IOException {
         //块文件目录
-        String chunkFileFolderPath = "D:\\competition\\output\\";
+        String chunkFileFolderPath = basePath + "/competition/output/";
         //块文件目录对象
         File chunkFileFolder = new File(chunkFileFolderPath);
         //块文件列表
@@ -78,7 +79,7 @@ public class Filesblocks {
         });
 
         //合并文件
-        File mergeFile = new File("D:\\competition\\merge.pdf");
+        File mergeFile = new File(basePath + "/competition/merge.pdf");
         //创建新文件
         boolean newFile = mergeFile.createNewFile();
 

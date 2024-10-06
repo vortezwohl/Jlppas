@@ -1,26 +1,21 @@
-package org.lppa.Run;
+package run;
 
 import bean.Tag;
-import bean.xigema;
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
-public class client {
+import static consts.Const.basePath;
+
+public class Client {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException, ClassNotFoundException {
-
-
-
-        File file = new File("D:\\competition\\output1");
+        File file = new File(basePath + "\\competition\\output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
@@ -31,14 +26,14 @@ public class client {
 
 
         byte[] gb = new byte[128];
-        FileInputStream fileInputStream = new FileInputStream("D:\\competition\\properties\\properties-g");
+        FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
 
 
         //私钥x
         byte[] xb = new byte[20];
-        FileInputStream fileInputStream1 = new FileInputStream("D:\\competition\\properties\\properties-x");
+        FileInputStream fileInputStream1 = new FileInputStream(basePath + "\\competition\\properties\\properties-x");
         fileInputStream1.read(xb);
         Element x = Zr.newElementFromBytes(xb);
 
@@ -46,7 +41,7 @@ public class client {
 
         //公钥g^x
         byte[] g_x_b = new byte[128];
-        FileInputStream fileInputStream2 = new FileInputStream("D:\\competition\\properties\\properties-g_x");
+        FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
 
@@ -54,24 +49,17 @@ public class client {
         //文件上传
 
         if(args.length > 0 && args[0].equals("fileup")){
-            client.fileup();
+            Client.FileInit();
         }else if(args.length > 0 && args[0].equals("audit")){
             //文件验证
-            client.audit();
+            Client.audit();
             }else{
             System.out.println("请输入指令");
         }
-
-
-
-
-
-
-
     }
 
-    public static void fileup() throws IOException, NoSuchAlgorithmException {
-        File file = new File("D:\\competition\\output1");
+    public static void FileInit() throws IOException, NoSuchAlgorithmException {
+        File file = new File(basePath + "\\competition\\output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
@@ -81,33 +69,33 @@ public class client {
         //g
 
         byte[] gb = new byte[128];
-        FileInputStream fileInputStream = new FileInputStream("D:\\competition\\properties\\properties-g");
+        FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
 
         //私钥x
         byte[] xb = new byte[20];
-        FileInputStream fileInputStream1 = new FileInputStream("D:\\competition\\properties\\properties-x");
+        FileInputStream fileInputStream1 = new FileInputStream(basePath + "\\competition\\properties\\properties-x");
         fileInputStream1.read(xb);
         Element x = Zr.newElementFromBytes(xb);
 
         //公钥g^x
         byte[] g_x_b = new byte[128];
-        FileInputStream fileInputStream2 = new FileInputStream("D:\\competition\\properties\\properties-g_x");
+        FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
 
         //生成tag
-        client.clienttag(file,G1,Zr,x,g);
+        Client.ClientTagging(file,G1,Zr,x,g);
 
     }
 
 
-    public static void clienttag(File file,Field G1,Field Zr,Element x,Element g) throws IOException, NoSuchAlgorithmException {
+    public static void ClientTagging(File file, Field G1, Field Zr, Element x, Element g) throws IOException, NoSuchAlgorithmException {
         //生成tag
         long startTimetag = System.currentTimeMillis();
         Tag tag = new Tag();
-        tag.taggen(file,G1,Zr,x,g);
+        tag.generate(file,G1,Zr,x,g);
         long endtTimetag = System.currentTimeMillis();
 
         long tagtime = endtTimetag - startTimetag;
@@ -138,7 +126,7 @@ public class client {
     public static void audit() throws IOException, ClassNotFoundException {
 
 
-        File file = new File("D:\\competition\\output1");
+        File file = new File(basePath + "\\competition\\output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");
@@ -149,14 +137,14 @@ public class client {
 
 
         byte[] gb = new byte[128];
-        FileInputStream fileInputStream = new FileInputStream("D:\\competition\\properties\\properties-g");
+        FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
 
 
         //私钥x
         byte[] xb = new byte[20];
-        FileInputStream fileInputStream1 = new FileInputStream("D:\\competition\\properties\\properties-x");
+        FileInputStream fileInputStream1 = new FileInputStream(basePath + "\\competition\\properties\\properties-x");
         fileInputStream1.read(xb);
         Element x = Zr.newElementFromBytes(xb);
 
@@ -164,24 +152,24 @@ public class client {
 
         //公钥g^x
         byte[] g_x_b = new byte[128];
-        FileInputStream fileInputStream2 = new FileInputStream("D:\\competition\\properties\\properties-g_x");
+        FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
         //验证
 
         int num = 200;
 
-        ArrayList<Element> chal = client.challenge(Zr,num);
+        ArrayList<Element> chal = Client.challenge(Zr,num);
 
 
-        server server = new server();
-        Tag tag1 = server.tagformfile(G1);
+        Server server = new Server();
+        Tag tag1 = server.tagFromFile(G1);
 
         Element hash = server.hash(G1, tag1, chal,num);
 
-        Element xigema = server.xigemagen(tag1, chal, G1);
+        Element xigema = server.sigmaGen(tag1, chal, G1);
 
-        Element mu = server.miugen(tag1, G1, Zr, chal);
+        Element mu = server.muGen(tag1, G1, Zr, chal);
 
 
         long startTimeverify = System.currentTimeMillis();
@@ -197,12 +185,4 @@ public class client {
 
         System.out.println("用户验证时间：" + (double)verifytime/1000 + "s" );
     }
-
-
-
-
-
-
-
-
 }

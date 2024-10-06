@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-public class taggenTest {
+import static consts.Const.basePath;
+
+public class TagGenTest {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 
@@ -26,7 +28,7 @@ public class taggenTest {
         Element u =  G1.newRandomElement();
 
         Tag tag = new Tag();
-        File file = new File("D:\\competition\\output\\output\\");
-        tag.taggen(file,G1,Zr,x,u);
+        File file = new File(basePath + "\\competition\\output\\output\\");
+        tag.generate(file,G1,Zr,x,u);
     }
 }

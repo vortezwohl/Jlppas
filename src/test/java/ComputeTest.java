@@ -2,14 +2,15 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import static consts.Const.basePath;
 
 import java.io.File;
 
-public class computeTest {
+public class ComputeTest {
 
     public static void main(String[] args) {
 
-        File file = new File("D:\\competition\\output1");
+        File file = new File(basePath + "/competition/output1");
         int length = file.list().length;
         //初始化
         Pairing pairing = PairingFactory.getPairing("a.properties");

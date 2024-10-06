@@ -1,4 +1,4 @@
-package org.lppa.utils;
+package utils;
 
 import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.ElementPowPreProcessing;
@@ -7,7 +7,7 @@ import it.unisa.dia.gas.jpbc.Field;
 import java.io.Serializable;
 import java.math.BigInteger;
 
-public class myField implements Serializable, Field {
+public class MyField implements Serializable, Field {
     @Override
     public Element newElement() {
         return null;
