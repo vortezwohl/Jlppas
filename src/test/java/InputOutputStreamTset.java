@@ -3,14 +3,23 @@ import it.unisa.dia.gas.jpbc.Element;
 import it.unisa.dia.gas.jpbc.Field;
 import it.unisa.dia.gas.jpbc.Pairing;
 import it.unisa.dia.gas.plaf.jpbc.pairing.PairingFactory;
+import lombok.AllArgsConstructor;
 import org.junit.Test;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static consts.Const.basePath;
 
 public class InputOutputStreamTset {
+
+    @AllArgsConstructor
+    static class Person {
+        private String name;
+        private Integer age;
+        private List<Integer> list;
+    }
 
 
 
@@ -29,8 +38,8 @@ public class InputOutputStreamTset {
 
 //        outputStream.writeObject(new person("TOM",23,list));
 
-        outputStream.writeObject(new person("Rose",20,list));
-        outputStream.writeObject(new person("adad",20,list));
+        outputStream.writeObject(new InputOutputStreamTset.Person("Rose",20,list));
+        outputStream.writeObject(new InputOutputStreamTset.Person("adad",20,list));
 
         outputStream.flush();
         outputStream.close();

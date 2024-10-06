@@ -21,36 +21,24 @@ public class Client {
         Pairing pairing = PairingFactory.getPairing("a.properties");
         Field G1 = pairing.getG1();
         Field Zr = pairing.getZr();
-
-        //g
-
-
         byte[] gb = new byte[128];
         FileInputStream fileInputStream = new FileInputStream(basePath + "\\competition\\properties\\properties-g");
         fileInputStream.read(gb);
         Element g = G1.newElementFromBytes(gb);
-
-
-        //私钥x
+        //private key x
         byte[] xb = new byte[20];
         FileInputStream fileInputStream1 = new FileInputStream(basePath + "\\competition\\properties\\properties-x");
         fileInputStream1.read(xb);
         Element x = Zr.newElementFromBytes(xb);
-
-
-
-        //公钥g^x
+        //public key g^x
         byte[] g_x_b = new byte[128];
         FileInputStream fileInputStream2 = new FileInputStream(basePath + "\\competition\\properties\\properties-g_x");
         fileInputStream2.read(g_x_b);
         Element g_x = G1.newElementFromBytes(g_x_b);
-
-
-        //文件上传
-
-        if(args.length > 0 && args[0].equals("fileup")){
+        //file upload
+        if(args.length > 0 && args[0].equals("fileup"))
             Client.FileInit();
-        }else if(args.length > 0 && args[0].equals("audit")){
+        else if(args.length > 0 && args[0].equals("audit")){
             //文件验证
             Client.audit();
             }else{
